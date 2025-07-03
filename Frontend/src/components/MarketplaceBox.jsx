@@ -2,163 +2,141 @@
 
 import { useState } from "react"
 
-const states = ["Maharashtra", "Punjab", "Uttar Pradesh", "Karnataka"]
-const districts = {
-  Maharashtra: ["Pune", "Nashik", "Nagpur"],
-  Punjab: ["Ludhiana", "Amritsar", "Jalandhar"],
-  "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi"],
-  Karnataka: ["Bengaluru", "Mysore", "Hubli"],
-}
-const crops = ["Wheat", "Rice", "Sugarcane", "Cotton"]
+import { all_crops, all_states, all_districts } from "./constants";
 
-const MarketplaceBox = () => {
-  const [selectedState, setSelectedState] = useState("")
-  const [selectedDistrict, setSelectedDistrict] = useState("")
-  const [selectedCrop, setSelectedCrop] = useState("")
-  const [mandiResults, setMandiResults] = useState(null)
-  const [loading, setLoading] = useState(false)
+const states = all_states;
+const districts = all_districts;
+const crops = all_crops;
 
-  const handleGetPrice = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch("http://localhost:3000/api/prompt/cropQuery", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          state: selectedState,
-          district: selectedDistrict,
-          crop_list: [selectedCrop],
-        }),
-      })
+const MarketplaceBox = () => { 
+const [selectedState, setSelectedState] = useState("");
+const [selectedDistrict, setSelectedDistrict] = useState("");
+const [selectedCrops, setSelectedCrops] = useState([]);
+const [mandiResults, setMandiResults] = useState(null);
 
-      const data = await response.json()
-      console.log("LLM response:", data)
-      setMandiResults(data.response.llm_resoponce)
-    } catch (err) {
-      console.error("Error fetching Mandi Prices:", err)
-      setMandiResults("Error Fetching Data. Please try again.")
-    }
-    setLoading(false)
+const handleCropChange = (crop) => {
+    setSelectedCrops((prev) =>
+      prev.includes(crop)
+        ? prev.filter((c) => c !== crop)
+        : [...prev, crop]
+    );
+    setMandiResults(null);
+  };
+
+const handleStateChange = (e) => {
+  setSelectedState(e.target.value);
+  setSelectedDistrict("");
+  setSelectedCrops([]); // Reset crops
+  setMandiResults(null);
+};
+
+const handleDistrictChange = (e) => {
+  setSelectedDistrict(e.target.value);
+  setSelectedCrops([]); // Reset crops
+  setMandiResults(null);
+};
+
+
+const handleGetPrice = async () => {
+  try {
+    const response = await fetch("http://localhost:3000/api/prompt/cropQuery", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        state: selectedState,
+        district: selectedDistrict,
+        crop_list: selectedCrops,
+      }),
+    });
+
+    const data = await response.json();
+    console.log("LLM response:", data);
+    setMandiResults(data.response.llm_resoponce); 
+  } catch (err) {
+    console.error("Error Fetching Mandi Prices:", err);
+    setMandiResults("Error Fetching Data");
   }
+};
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">💰 Crop Marketplace</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Get real-time crop prices from different markets and find the best deals for your produce
-          </p>
+
+return (
+    <div className="w-full min-h-screen flex items-center justify-center bg-blue-100">
+      <div className="bg-blue-500 rounded-xl shadow-lg z-20 flex flex-col justify-center items-center w-full max-w-lg h-[70vh] p-8">
+        <h2 className="text-white font-bold text-2xl mb-6">Find Crop Prices</h2>
+
+        {/* State Dropdown */}
+        <div className="mb-4 w-full">
+          <label className="block text-white mb-2" htmlFor="state">State</label>
+          <select
+            id="state"
+            className="w-full px-3 py-2 rounded-lg border border-blue-200 focus:outline-none"
+            value={selectedState}
+            onChange={handleStateChange}
+          >
+            <option value="">Select State</option>
+            {states.map(state => (
+              <option key={state} value={state}>{state}</option>
+            ))}
+          </select>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-2xl p-8 border border-green-100">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Find Crop Prices</h2>
+        {/* District Dropdown */}
+        <div className="mb-4 w-full">
+          <label className="block text-white mb-2" htmlFor="district">District</label>
+          <select
+            id="district"
+            className="w-full px-3 py-2 rounded-lg border border-blue-200 focus:outline-none"
+            value={selectedDistrict}
+            onChange={handleDistrictChange}
+            disabled={!selectedState}
+          >
+            <option value="">Select District</option>
+            {selectedState &&
+              districts[selectedState].map(district => (
+                <option key={district} value={district}>{district}</option>
+              ))}
+          </select>
+        </div>
 
-              {/* State Dropdown */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="state">
-                  Select State
-                </label>
-                <select
-                  id="state"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none transition-all duration-200"
-                  value={selectedState}
-                  onChange={(e) => {
-                    setSelectedState(e.target.value)
-                    setSelectedDistrict("")
-                    setMandiResults(null)
-                  }}
-                >
-                  <option value="">Choose your state</option>
-                  {states.map((state) => (
-                    <option key={state} value={state}>
-                      {state}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* District Dropdown */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="district">
-                  Select District
-                </label>
-                <select
-                  id="district"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none transition-all duration-200 disabled:bg-gray-100"
-                  value={selectedDistrict}
-                  onChange={(e) => {
-                    setSelectedDistrict(e.target.value)
-                    setMandiResults(null)
-                  }}
-                  disabled={!selectedState}
-                >
-                  <option value="">Choose your district</option>
-                  {selectedState &&
-                    districts[selectedState].map((district) => (
-                      <option key={district} value={district}>
-                        {district}
-                      </option>
-                    ))}
-                </select>
-              </div>
-
-              {/* Crop Dropdown */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="crop">
-                  Select Crop
-                </label>
-                <select
-                  id="crop"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none transition-all duration-200"
-                  value={selectedCrop}
-                  onChange={(e) => {
-                    setSelectedCrop(e.target.value)
-                    setMandiResults(null)
-                  }}
-                >
-                  <option value="">Choose your crop</option>
-                  {crops.map((crop) => (
-                    <option key={crop} value={crop}>
-                      {crop}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <button
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-lg mt-6 hover:from-green-600 hover:to-green-700 transition-all duration-200 font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-lg"
-                disabled={!selectedState || !selectedDistrict || !selectedCrop || loading}
-                onClick={handleGetPrice}
-              >
-                {loading ? "Getting Prices..." : "Get Best Price"}
-              </button>
-            </div>
-
-            {/* Results Section */}
-            <div className="bg-gray-50 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">Price Information</h3>
-              {mandiResults ? (
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                  <pre className="text-sm text-gray-700 whitespace-pre-wrap font-mono">{mandiResults}</pre>
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <div className="text-6xl mb-4">📊</div>
-                  <p className="text-gray-500">Select your location and crop to get current market prices</p>
-                </div>
-              )}
-            </div>
+        {/* Crop Checkbox List */}
+        <div className="mb-4 w-full">
+          <label className="block text-white mb-2">Crops</label>
+          <div className="flex flex-wrap max-h-40 overflow-y-auto bg-white rounded p-2">
+            {crops.map(crop => (
+              <label key={crop} className="mr-4 mb-2 flex items-center text-blue-700 text-sm">
+                <input
+                  type="checkbox"
+                  value={crop}
+                  checked={selectedCrops.includes(crop)}
+                  onChange={() => handleCropChange(crop)}
+                  className="mr-2"
+                />
+                {crop}
+              </label>
+            ))}
           </div>
         </div>
+
+        <button
+          className="bg-white text-blue-700 px-6 py-2 rounded-lg mt-4 hover:bg-blue-100 transition font-semibold"
+          disabled={!selectedState || !selectedDistrict || selectedCrops.length === 0}
+          onClick={handleGetPrice}
+        >
+          Get Best Price
+        </button>
       </div>
+
+      {/* Show LLM Result */}
+      {mandiResults && (
+        <div className="bg-white mt-6 p-4 rounded shadow-lg max-w-xl w-full text-sm text-gray-800 whitespace-pre-wrap">
+          {mandiResults}
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default MarketplaceBox
