@@ -75,12 +75,12 @@ def mandi_price_rate(state, district, crop_list):
 
 
 #Testing 
-mandi_price_rate("Haryana", "gurgaon", ["Apple",'Arhar',
- 'Banana',
- 'Beetroot',
- 'Tomato',
- 'Bhindi',
- 'Ladies Finger'])
+# mandi_price_rate("Haryana", "gurgaon", ["Apple",'Arhar',
+#  'Banana',
+#  'Beetroot',
+#  'Tomato',
+#  'Bhindi',
+#  'Ladies Finger'])
 
 
 def image_solution():

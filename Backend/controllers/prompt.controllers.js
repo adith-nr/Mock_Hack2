@@ -1,12 +1,13 @@
 import FormData from "form-data"
 
 export const cropQueryController = async (req,res)=>{
-    const {crop_list,district} = req.body
+    const {state,district,crop_list} = req.body
+    console.log(req.body)
     try {
         if(crop_list.length === 0){
             return res.status(400).json({message:"Crop list is required"})
         }
-        const data ={"state":req.user.state,"district":district,"crop_list":crop_list}
+        const data ={"state":state,"district":district,"crop_list":crop_list}
         const resp = await fetch("http://localhost:8000/mandi_price",{
             method:"POST",
             headers:{
