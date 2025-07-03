@@ -9,7 +9,7 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 
-router.post("/cropQuery",cropQueryController)
+router.post("/cropQuery",protectRoute,cropQueryController)
 router.post("/schemeQuery",protectRoute,schemeQueryController)
 router.post("/diseaseQuery",protectRoute,upload.single("image"),diseaseQueryController)
 

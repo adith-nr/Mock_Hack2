@@ -12,7 +12,7 @@ function Auth() {
 
     const handleLogin = async()=>{
         const data ={"email":email,"password":password}
-        const response = await fetch("http://localhost:5000/api/auth/login",{
+        const response = await fetch("http://localhost:3000/api/auth/login",{
             method:"POST",
             credentials:"include",
             headers:{
@@ -22,8 +22,8 @@ function Auth() {
         })
         const res = await response.json()
         console.log(res)
-        if(res.success){
-            navigate("/")
+        if(res.message === "Login successful"){
+            navigate("/home")
         }
         else{
             alert("Invalid credentials")
@@ -31,7 +31,7 @@ function Auth() {
     }
     const handleSignup = async()=>{
         const data ={"name":name,"email":email,"password":password,"state":state}
-        const response = await fetch("http://localhost:5000/api/auth/signup",{
+        const response = await fetch("http://localhost:3000/api/auth/signup",{
             method:"POST",
             credentials:"include",
             headers:{
@@ -41,8 +41,8 @@ function Auth() {
         })
         const res = await response.json()
         console.log(res)
-        if(res.success){
-            navigate("/")
+        if(res.message === "User created successfully"){
+            navigate("/home")
         }
         else{
             alert("Invalid credentials")
@@ -67,6 +67,7 @@ function Auth() {
             <input type="text" placeholder='State' value={state} onChange={(e)=>setState(e.target.value)}/>
             <button onClick={handleSignup}>Signup</button>
         </div>)}
+        <button onClick={()=>setIsLogIn(!isLogIn)}>{isLogIn ? "Signup":"Login"}</button>
     </div>
   )
 }

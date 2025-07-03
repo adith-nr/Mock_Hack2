@@ -129,5 +129,5 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
 image_solution("test_img.jpg", "My crop is affected with somthing , what to do?")
 
 
-def find_govt_scheme():
-    return None
+# def find_govt_scheme():
+#     return None
