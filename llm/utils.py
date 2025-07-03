@@ -128,7 +128,7 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
         print("No JSON object found in response.")
 
 # The parameter is expected to be the image filename ---> on the server
-image_solution("test_img.jpg", "My crop is affected with somthing , what to do?")
+#image_solution("test_img.jpg", "My crop is affected with somthing , what to do?")
 
 
 def find_govt_scheme(query, state):
@@ -145,6 +145,8 @@ def find_govt_scheme(query, state):
 
     {{
     <scheme-name> : <Report>
+    Use Bullet Points to make it more readable.
+    Give Good spacing between the schemes and each factor.
     }}
     
     """
