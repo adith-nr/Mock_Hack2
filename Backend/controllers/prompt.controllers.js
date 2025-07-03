@@ -41,7 +41,7 @@ export const diseaseQueryController = async (req,res)=>{
         })
         const ans = await resp.json()
         console.log(ans)
-        res.status(200).json({message:"Disease query successful",response:ans.response})
+        res.status(200).json({message:"Disease query successful",crop:ans.crop,disease:ans.disease,solution:ans.solution})
     } catch (error) {
         console.log("Error in diseaseQueryController",error)
         res.status(500).json({message:"Internal server error"})

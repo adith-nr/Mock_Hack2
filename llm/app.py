@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 
-from utils import mandi_price_rate # make sure these work with FastAPI
+from utils import mandi_price_rate 
 
 app = FastAPI()
 
