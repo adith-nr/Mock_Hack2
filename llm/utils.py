@@ -131,7 +131,6 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
 
 
 def find_govt_scheme(query, state):
-
     prompt = f"""
 
     Based on the user query :{query} and the need of the user go through all the National Schemes in {national_schemes},
@@ -166,4 +165,5 @@ def find_govt_scheme(query, state):
     else:
         print("No JSON object found in response.")
 
-find_govt_scheme("What is the cutoff date for determination of eligibility of beneficiaries under the scheme, Pradhan Mantri Kisan Samman Nidhi", "Uttar Pradesh")
+#find_govt_scheme("What is the cutoff date for determination of eligibility of beneficiaries under the scheme, Pradhan Mantri Kisan Samman Nidhi", "Uttar Pradesh")
+

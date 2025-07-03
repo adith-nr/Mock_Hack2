@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import SchemesBox from "./SchemesBox";
 import ScanPlantBox from "./ScanPlantBox";
 import MarketplaceBox from "./MarketplaceBox";
+import Auth from "./Auth";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -58,17 +59,20 @@ const LandingPage = () => {
   );
 };
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/schemes" element={<SchemesBox />} />
-        <Route path="/scan" element={<ScanPlantBox />} />
-        <Route path="/marketplace" element={<MarketplaceBox />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
+export default LandingPage;
 
-export default App;
+// function App() {
+//   return (
+//     <BrowserRouter>
+//       <Routes>
+//         <Route path="/" element={<Auth />} />
+//         <Route path="/home" element={<LandingPage />} />
+//         <Route path="/schemes" element={<SchemesBox />} />
+//         <Route path="/scan" element={<ScanPlantBox />} />
+//         <Route path="/marketplace" element={<MarketplaceBox />} />
+//       </Routes>
+//     </BrowserRouter>
+//   );
+// }
+
+// export default App;

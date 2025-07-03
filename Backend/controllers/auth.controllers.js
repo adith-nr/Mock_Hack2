@@ -5,22 +5,25 @@ import { genAuthToken } from "../middleware/token.js";
 
 
 export const signupController = async (req,res)=>{
+    console.log(req.body)
     const {name,email,password,state}=req.body;
     try {
         if(!name || !email || !password){
             return res.status(400).json({message:"All fields are required"})
         }
+        
         const existingUser = await User.findOne({email})
         if(existingUser){
             return res.status(400).json({message:"User aldready exists"})
         }
+        
         const salt = await genSalt(10)
         const hash = await bcrypt.hash(password,salt)
-        
-        const user = new User({...req.body,password:hash}).save()
-
+       
+        const user = await new User({...req.body,password:hash}).save()
+       
         genAuthToken(user._id,res)
-
+        console.log("User created successfully")
         res.status(201).json({message:"User created successfully",user})
 
 
@@ -33,6 +36,7 @@ export const signupController = async (req,res)=>{
 
 
 export const loginController = async (req,res)=>{
+    console.log(req.body)
     const {email,password}=req.body
     try {
         if(!email || !password){
@@ -50,7 +54,7 @@ export const loginController = async (req,res)=>{
         }
 
         genAuthToken(user._id,res)
-
+        console.log("Login successful")
         res.status(200).json({message:"Login successful",user})
     } 
     catch (error) {
