@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 
-from utils import mandi_price_rate, image_solution # make sure these work with FastAPI
+from utils import mandi_price_rate, image_solution, find_govt_scheme # make sure these work with FastAPI
 
 app = FastAPI()
 
@@ -23,10 +23,11 @@ class MandiRequest(BaseModel):
     crop_list: List[str]
 
 class GovtSchemeRequest(BaseModel):
-    text: str  # Adjust if your payload is different
+    query: str 
+    state: str
 
 class ImageRequest(BaseModel):
-    img : UploadFile = File(...)
+    img : UploadFile = File(...) #Edit here if img filename would be provided from the server
     query: str
 
 @app.post("/mandi_price")
@@ -43,8 +44,8 @@ async def image_query_resolve(req: ImageRequest):
     return {"status": "sucess", "llm_responce": result}
 
 
-# @app.post("/govt_scheme")
-# async def govt_scheme_resolve(req: GovtSchemeRequest):
-#     print("Received scheme query:", req.text)
-#     result = find_govt_scheme(req.text)
-#     return {"you_sent": req.text, "summary": result}
+@app.post("/govt_scheme")
+async def govt_scheme_resolve(req: GovtSchemeRequest):
+    print("Received scheme query:", req.query, req.state)
+    result = find_govt_scheme(req.query, req.state)
+    return {"status": "sucess", "llm_responce": result}
