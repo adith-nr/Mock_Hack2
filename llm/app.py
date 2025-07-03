@@ -5,6 +5,7 @@ from typing import List
 
 from utils import mandi_price_rate, image_solution, find_govt_scheme # make sure these work with FastAPI
 
+
 app = FastAPI()
 
 # Enable CORS

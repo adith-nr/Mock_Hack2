@@ -7,11 +7,12 @@ const ChatBox = () => {
   const [input, setInput] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const sendToBackend = async (text, image) => {
     const formData = new FormData();
@@ -23,41 +24,50 @@ const ChatBox = () => {
         method: "POST",
         body: formData,
       });
+      if (response.ok) {
+        console.log("Sent to LLM successfully");
+      }
       const data = await response.json();
       setMessages(msgs => [
-        ...msgs,
+        ...msgs.slice(0, -1), // Remove loading message
         { sender: "bot", text: data.reply || "Thank you for your message. Our team will help you soon!" }
       ]);
     } catch (error) {
       setMessages(msgs => [
-        ...msgs,
+        ...msgs.slice(0, -1), // Remove loading message
         { sender: "bot", text: "Error sending data to backend." }
       ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSend = async (e) => {
     e.preventDefault();
-    if (!input.trim() && !imageFile) return;
+    if (!input && !imageFile) return;
 
-    let newMessages = [...messages];
-    // Add user message with text and/or image
-    if (imageFile && imagePreview) {
-      newMessages = [
-        ...newMessages,
-        { sender: "user", text: input.trim() ? input : undefined, image: imagePreview }
-      ];
-    } else if (input.trim()) {
-      newMessages = [...newMessages, { sender: "user", text: input }];
-    }
-    setMessages(newMessages);
-
-    // Send to backend
-    await sendToBackend(input, imageFile);
+    // Show user message
+    setMessages(msgs => [
+      ...msgs,
+      {
+        sender: "user",
+        text: input ? input : "",
+        image: imagePreview ? imagePreview : null
+      }
+    ]);
 
     setInput("");
     setImageFile(null);
     setImagePreview(null);
+
+    // Show loading animation
+    setIsLoading(true);
+    setMessages(msgs => [
+      ...msgs,
+      { sender: "bot", loading: true }
+    ]);
+
+    await sendToBackend(input, imageFile);
   };
 
   const handleImageUpload = (e) => {
@@ -76,6 +86,15 @@ const ChatBox = () => {
     setImageFile(null);
     setImagePreview(null);
   };
+
+  // Loading animation component
+  const LoadingDots = () => (
+    <div className="flex space-x-1 mt-2">
+      <span className="block w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.32s]"></span>
+      <span className="block w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.16s]"></span>
+      <span className="block w-2 h-2 bg-blue-400 rounded-full animate-bounce"></span>
+    </div>
+  );
 
   return (
     <div className="bg-blue-500 rounded-xl shadow-lg z-20 flex flex-col justify-between items-center w-full max-w-[90vw] h-[80vh] overflow-hidden">
@@ -101,8 +120,10 @@ const ChatBox = () => {
                   className="mb-2 max-w-[180px] max-h-[180px] rounded"
                 />
               )}
-              {msg.text && (
-                <div className="w-full text-left">{msg.text}</div>
+              {msg.loading ? (
+                <LoadingDots />
+              ) : (
+                msg.text && <div className="w-full text-left">{msg.text}</div>
               )}
             </div>
           </div>
