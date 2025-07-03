@@ -36,8 +36,8 @@ const handleGetPrice = async () => {
     console.log("LLM response:", data);
     setMandiResults(data.response.llm_resoponce); 
   } catch (err) {
-    console.error("Error fetching mandi prices:", err);
-    setMandiResults("Error fetching data");
+    console.error("Error fetching Mandi Prices:", err);
+    setMandiResults("Error Fetching Data");
   }
 };
 
