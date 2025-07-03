@@ -1,78 +1,131 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import SchemesBox from "./SchemesBox";
-import ScanPlantBox from "./ScanPlantBox";
-import MarketplaceBox from "./MarketplaceBox";
-import Auth from "./Auth";
+"use client"
+import { useNavigate } from "react-router-dom"
 
 const LandingPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
-    <>
-      {/* Section: Above Columns */}
-      <section className="w-full bg-gray-100 flex justify-center items-center py-10 h-screen">
-        {/* Make SchemesBox clickable */}
-        <div className="w-full flex justify-center items-center">
-          <div
-            className="w-full max-w-2xl cursor-pointer"
-            onClick={() => navigate("/schemes")}
-          >
-            <SchemesBox />
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-green-600 to-blue-600 text-white">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">Smart Farming Made Simple</h1>
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+              Diagnose plant diseases, check crop prices, and access government schemes - all in one place
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => navigate("/scan")}
+                className="bg-white text-green-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transform transition-all duration-200 hover:scale-105 shadow-lg"
+              >
+                🔍 Scan Your Plant
+              </button>
+              <button
+                onClick={() => navigate("/marketplace")}
+                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-green-600 transform transition-all duration-200 hover:scale-105"
+              >
+                💰 Check Prices
+              </button>
+            </div>
           </div>
         </div>
       </section>
-      {/* Section: Columns */}
-      <section className="flex flex-1 h-screen">
-        {/* Left Column */}
-        <div className="w-1/2 bg-blue-500 flex items-center justify-center relative">
-          <div
-            className="w-4/5 h-4/5 bg-white rounded-xl shadow-lg z-20 m-8 cursor-pointer hover:scale-105 transition-transform duration-200 flex flex-col justify-center items-center"
-            onClick={() => navigate("/scan")}
-          >
-            <h2 className="text-blue-700 font-semibold text-2xl">Scan the plant</h2>
-            <p className="text-gray-600 mt-4 text-lg text-center">
-              Upload an image of your plant to check its health and get suggestions.
+
+      {/* Features Section */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Everything You Need for Smart Farming</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Our AI-powered platform helps farmers make informed decisions and maximize their crop yields
             </p>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700 transition font-semibold">
-              Go to Plant Scanner
-            </button>
           </div>
-        </div>
-        {/* Right Column */}
-        <div className="w-1/2 bg-white flex items-center justify-center relative">
-          <div
-            className="w-4/5 h-4/5 bg-blue-500 rounded-xl shadow-lg z-20 m-8 cursor-pointer hover:scale-105 transition-transform duration-200 flex flex-col justify-center items-center"
-            onClick={() => navigate("/marketplace")}
-          >
-            <h2 className="text-white font-semibold text-2xl">Marketplace</h2>
-            <p className="text-blue-100 mt-4 text-lg text-center">
-              Get the best price for your crops. Connect with buyers directly.
-            </p>
-            <button className="bg-white text-blue-700 px-4 py-2 rounded-lg mt-4 hover:bg-blue-100 transition font-semibold">
-              Visit Marketplace
-            </button>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Plant Scanner Card */}
+            <div
+              className="bg-white rounded-2xl shadow-xl p-8 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-green-100"
+              onClick={() => navigate("/scan")}
+            >
+              <div className="text-center">
+                <div className="bg-gradient-to-r from-green-400 to-green-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-2xl">🔍</span>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Plant Disease Scanner</h3>
+                <p className="text-gray-600 mb-6">
+                  Upload photos of your plants and get instant AI-powered disease diagnosis with treatment
+                  recommendations.
+                </p>
+                <button className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200">
+                  Start Scanning
+                </button>
+              </div>
+            </div>
+
+            {/* Marketplace Card */}
+            <div
+              className="bg-white rounded-2xl shadow-xl p-8 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-blue-100"
+              onClick={() => navigate("/marketplace")}
+            >
+              <div className="text-center">
+                <div className="bg-gradient-to-r from-blue-400 to-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-2xl">💰</span>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Crop Marketplace</h3>
+                <p className="text-gray-600 mb-6">
+                  Get real-time crop prices from different markets and find the best deals for your produce.
+                </p>
+                <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-200">
+                  Check Prices
+                </button>
+              </div>
+            </div>
+
+            {/* Government Schemes Card */}
+            <div
+              className="bg-white rounded-2xl shadow-xl p-8 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-purple-100 md:col-span-2 lg:col-span-1"
+              onClick={() => navigate("/schemes")}
+            >
+              <div className="text-center">
+                <div className="bg-gradient-to-r from-purple-400 to-purple-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-2xl">📋</span>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Government Schemes</h3>
+                <p className="text-gray-600 mb-6">
+                  Discover and apply for government schemes and subsidies available for farmers in your region.
+                </p>
+                <button className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:from-purple-600 hover:to-purple-700 transition-all duration-200">
+                  View Schemes
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-    </>
-  );
-};
 
-export default LandingPage;
+      {/* Stats Section */}
+      <section className="bg-gradient-to-r from-green-600 to-blue-600 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold mb-2">10,000+</div>
+              <div className="text-xl">Plants Scanned</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold mb-2">95%</div>
+              <div className="text-xl">Accuracy Rate</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold mb-2">500+</div>
+              <div className="text-xl">Happy Farmers</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
 
-// function App() {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" element={<Auth />} />
-//         <Route path="/home" element={<LandingPage />} />
-//         <Route path="/schemes" element={<SchemesBox />} />
-//         <Route path="/scan" element={<ScanPlantBox />} />
-//         <Route path="/marketplace" element={<MarketplaceBox />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
+export default LandingPage

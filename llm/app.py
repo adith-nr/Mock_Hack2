@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, UploadFile, File
+from fastapi import FastAPI, Request, UploadFile, File,Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
@@ -39,9 +39,12 @@ async def mandi_price_resolve(req: MandiRequest):
 
 
 @app.post("/image_query")
-async def image_query_resolve(req: ImageRequest):
-    print("Received data:", req)
-    result = image_solution(req.img, req.query)
+async def image_query_resolve(
+    image: UploadFile = File(...),
+    prompt: str = Form(...)
+):
+    print("Received data:", prompt)
+    result = image_solution(image.file, prompt)
     return {"status": "sucess", "llm_responce": result}
 
 
