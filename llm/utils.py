@@ -136,7 +136,9 @@ def find_govt_scheme(query, state):
 
     Based on the user query :{query} and the need of the user go through all the National Schemes in {national_schemes},
     and all the state shcemes in {state_schemes[state]} and give responce.
-
+    If a specific scheme is not found, give a report of only that scheme.
+    If not:
+        Give at max 3 schemes that can resolve the users issue or help them in some way.
     Find schemes that can resolve the users issue or help them in some way.
 
     Give a very high end detailed report covering everything from National or State Scheme, Eligibility, Documents Required if Any, How To Apply (Proper Procedure), Where To Apply (Provide Links if possible), Benefits, Waiting Period, Date's till whcih the scheme is active.
@@ -169,4 +171,5 @@ def find_govt_scheme(query, state):
         print("No JSON object found in response.")
 
 #find_govt_scheme("I am facing issues with irrgation because I don't have any pond or lake. What to do?", "Uttar Pradesh")
+find_govt_scheme("Pradhan Mantri Fasal Bima Yojana","Uttar Pradesh")
 
