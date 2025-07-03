@@ -18,23 +18,28 @@ const ChatBox = () => {
 
   const sendToBackend = async (text, image) => {
     const formData = new FormData()
-    if (text) formData.append("text", text)
+    if (text) formData.append("prompt", text)
     if (image) formData.append("image", image)
 
     try {
-      const response = await fetch("/api/prompt/diseaseQuery", {
+      const response = await fetch("http://localhost:3000/api/prompt/diseaseQuery", {
         method: "POST",
+        credentials: "include",
+        
         body: formData,
-      })
+      });
+      
       if (response.ok) {
         console.log("Sent to LLM successfully")
       }
       const data = await response.json()
+      console.log(data)
       setMessages((msgs) => [
         ...msgs.slice(0, -1), // Remove loading message
         { sender: "bot", text: data.solution || "Thank you for your message. Our team will help you soon!" },
       ])
     } catch (error) {
+      console.log(error)
       setMessages((msgs) => [
         ...msgs.slice(0, -1), // Remove loading message
         { sender: "bot", text: "Error sending data to backend. Please try again." },

@@ -1,6 +1,6 @@
 import requests 
 from rapidfuzz import process
-import os
+import os, io
 from dotenv import load_dotenv
 import json
 from langchain_groq import ChatGroq
@@ -94,8 +94,8 @@ def mandi_price_rate(state, district, crop_list):
 #  'Ladies Finger'])
 
 
-def image_solution(img, query):
-    img = Image.open(img)
+def image_solution(img_bytes, query):
+    img = Image.open(io.BytesIO(img_bytes))
     question = f"""
 Which crop disease is this? Also give your response with respect to user's query: {query}.
 
@@ -128,7 +128,14 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
         print("No JSON object found in response.")
 
 # The parameter is expected to be the image filename ---> on the server
-image_solution("test_img.jpg", "My crop is affected with somthing , what to do?")
+
+# img = Image.open("test2.jpg")
+# buf = io.BytesIO()
+# img.save(buf, format="JPEG")  # or "PNG" 
+# img_bytes = buf.getvalue()
+
+
+# image_solution(img_bytes, "My crop is affected with somthing , what to do?")
 
 
 def find_govt_scheme(query, state):

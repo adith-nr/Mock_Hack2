@@ -27,21 +27,33 @@ export const cropQueryController = async (req,res)=>{
 export const diseaseQueryController = async (req,res)=>{
     const {prompt} = req.body
     const image = req.file
-    try{
+
+    console.log(prompt);
+    console.log(image.buffer);
+        try{
         if(!prompt || !image){
             return res.status(400).json({message:"Prompt and image are required"})
         }
         const formData = new FormData()
-        formData.append("prompt",prompt)
-        formData.append("image",image)
+        formData.append("prompt", prompt);
+        formData.append("image_bytes", image.buffer, {
+          filename: image.originalname,
+          contentType: image.mimetype,
+        });
+
         console.log(formData)
+        
         const resp = await fetch("http://localhost:8000/image_query",{
             method:"POST",
-            body:formData
+            headers: {
+            "Content-Type": "multipart/form-data"
+            },
+            body: formData
         })
         const ans = await resp.json()
-        console.log(ans)
+        console.log(ans.llm_responce)
         res.status(200).json({message:"Disease query successful",crop:ans.crop,disease:ans.disease,solution:ans.solution})
+    
     } catch (error) {
         console.log("Error in diseaseQueryController",error)
         res.status(500).json({message:"Internal server error"})
