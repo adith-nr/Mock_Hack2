@@ -51,6 +51,7 @@ const handleGetPrice = async () => {
         crop_list: selectedCrops,
       }),
     });
+    
 
     const data = await response.json();
     console.log("LLM response:", data);
