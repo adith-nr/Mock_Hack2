@@ -11,6 +11,7 @@ from PIL import Image
 import google.generativeai as genai
 
 from consts import all_states, crops
+from schemes import *
 
 load_dotenv()
 MODEL = "llama-3.1-8b-instant"
@@ -125,9 +126,44 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
     else:
         print("No JSON object found in response.")
 
+# The parameter is expected to be the image filename ---> on the server
+#image_solution("test_img.jpg", "My crop is affected with somthing , what to do?")
 
-image_solution("test_img.jpg", "My crop is affected with somthing , what to do?")
+
+def find_govt_scheme(query, state):
+    prompt = f"""
+
+    Based on the user query :{query} and the need of the user go through all the National Schemes in {national_schemes},
+    and all the state shcemes in {state_schemes[state]} and give responce.
+
+    Find schemes that can resolve the users issue or help them in some way.
+
+    Give a very high end detailed report covering everything from National or State Scheme, Eligibility, Documents Required if Any, How To Apply (Proper Procedure), Where To Apply (Provide Links if possible), Benefits, Waiting Period, Date's till whcih the scheme is active.
+
+    Return this in a structured JSON Object of this format:
+
+    {{
+    <scheme-name> : <Report>
+    }}
+    
+    """
+
+    llm_responce = llm.invoke([HumanMessage(prompt)])
 
 
-# def find_govt_scheme():
-#     return None
+    # Extract JSON object from response
+    match = re.search(r'\{[\s\S]*\}', llm_responce.content)
+    if match:
+        json_str = match.group(0)
+        try:
+            result = json.loads(json_str)
+            print(json.dumps(result, indent=2))
+            return result
+        except Exception as e:
+            print("Error parsing JSON:", e)
+            print("Raw JSON string:", json_str)
+    else:
+        print("No JSON object found in response.")
+
+#find_govt_scheme("What is the cutoff date for determination of eligibility of beneficiaries under the scheme, Pradhan Mantri Kisan Samman Nidhi", "Uttar Pradesh")
+
