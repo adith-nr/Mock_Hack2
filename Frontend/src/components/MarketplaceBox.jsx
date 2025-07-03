@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client"
+
+import { useState } from "react"
 
 import { all_crops, all_states, all_districts } from "./constants";
 
@@ -7,12 +9,12 @@ const districts = all_districts;
 const crops = all_crops;
 
 const MarketplaceBox = () => { 
-  const [selectedState, setSelectedState] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedCrops, setSelectedCrops] = useState([]);
-  const [mandiResults, setMandiResults] = useState(null);
+const [selectedState, setSelectedState] = useState("");
+const [selectedDistrict, setSelectedDistrict] = useState("");
+const [selectedCrops, setSelectedCrops] = useState([]);
+const [mandiResults, setMandiResults] = useState(null);
 
-  const handleCropChange = (crop) => {
+const handleCropChange = (crop) => {
     setSelectedCrops((prev) =>
       prev.includes(crop)
         ? prev.filter((c) => c !== crop)
@@ -21,44 +23,46 @@ const MarketplaceBox = () => {
     setMandiResults(null);
   };
 
-  const handleStateChange = (e) => {
-    setSelectedState(e.target.value);
-    setSelectedDistrict("");
-    setSelectedCrops([]); // Reset crops
-    setMandiResults(null);
-  };
+const handleStateChange = (e) => {
+  setSelectedState(e.target.value);
+  setSelectedDistrict("");
+  setSelectedCrops([]); // Reset crops
+  setMandiResults(null);
+};
 
-  const handleDistrictChange = (e) => {
-    setSelectedDistrict(e.target.value);
-    setSelectedCrops([]); // Reset crops
-    setMandiResults(null);
-  };
+const handleDistrictChange = (e) => {
+  setSelectedDistrict(e.target.value);
+  setSelectedCrops([]); // Reset crops
+  setMandiResults(null);
+};
 
-  const handleGetPrice = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/prompt/cropQuery", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          state: selectedState,
-          district: selectedDistrict,
-          crop_list: selectedCrops,
-        }),
-      });
 
-      const data = await response.json();
-      console.log("LLM response:", data);
-      setMandiResults(data.response.llm_resoponce); 
-    } catch (err) {
-      console.error("Error fetching Mandi Prices:", err);
-      setMandiResults("Error Fetching Data");
-    }
-  };
+const handleGetPrice = async () => {
+  try {
+    const response = await fetch("http://localhost:3000/api/prompt/cropQuery", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        state: selectedState,
+        district: selectedDistrict,
+        crop_list: selectedCrops,
+      }),
+    });
 
-  return (
+    const data = await response.json();
+    console.log("LLM response:", data);
+    setMandiResults(data.response.llm_resoponce); 
+  } catch (err) {
+    console.error("Error Fetching Mandi Prices:", err);
+    setMandiResults("Error Fetching Data");
+  }
+};
+
+
+return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100">
       <div className="bg-blue-500 rounded-xl shadow-lg z-20 flex flex-col justify-center items-center w-full max-w-lg h-[70vh] p-8">
         <h2 className="text-white font-bold text-2xl mb-6">Find Crop Prices</h2>
@@ -135,4 +139,4 @@ const MarketplaceBox = () => {
   );
 };
 
-export default MarketplaceBox;
+export default MarketplaceBox
