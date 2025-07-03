@@ -1,0 +1,19 @@
+[
+  { "state": "Maharashtra",
+    "district": "Pune", 
+    "crop": "Wheat", 
+    "mandi": "Pune Mandi", 
+    "price": 2300 },
+
+  { "state": "Maharashtra", 
+    "district": "Pune", 
+    "crop": "Wheat", 
+    "mandi": "Shirur Mandi", 
+    "price": 2250 },
+    
+  { "state": "Maharashtra", "district": "Nashik", "crop": "Wheat", "mandi": "Nashik Mandi", "price": 2400 },
+  { "state": "Punjab", "district": "Ludhiana", "crop": "Rice", "mandi": "Ludhiana Mandi", "price": 2100 },
+  { "state": "Punjab", "district": "Amritsar", "crop": "Rice", "mandi": "Amritsar Mandi", "price": 2150 },
+  { "state": "Uttar Pradesh", "district": "Lucknow", "crop": "Sugarcane", "mandi": "Lucknow Mandi", "price": 2800 },
+  { "state": "Uttar Pradesh", "district": "Kanpur", "crop": "Sugarcane", "mandi": "Kanpur Mandi", "price": 2750 }
+]
