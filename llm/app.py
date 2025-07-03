@@ -24,7 +24,7 @@ class MandiRequest(BaseModel):
     crop_list: List[str]
 
 class GovtSchemeRequest(BaseModel):
-    query: str 
+    prompt: str 
     state: str
 
 class ImageRequest(BaseModel):
@@ -50,6 +50,6 @@ async def image_query_resolve(
 
 @app.post("/govt_scheme")
 async def govt_scheme_resolve(req: GovtSchemeRequest):
-    print("Received scheme query:", req.query, req.state)
-    result = find_govt_scheme(req.query, req.state)
+    print("Received scheme query:", req.prompt, req.state)
+    result = find_govt_scheme(req.prompt, req.state)
     return {"status": "sucess", "llm_responce": result}

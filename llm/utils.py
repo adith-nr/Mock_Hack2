@@ -119,6 +119,7 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
         try:
             result = json.loads(json_str)
             
+            print(json.dump(result, indent=2))
             return result
         except Exception as e:
             print("Error parsing JSON:", e)
@@ -127,7 +128,7 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
         print("No JSON object found in response.")
 
 # The parameter is expected to be the image filename ---> on the server
-#image_solution("test_img.jpg", "My crop is affected with somthing , what to do?")
+image_solution("test_img.jpg", "My crop is affected with somthing , what to do?")
 
 
 def find_govt_scheme(query, state):
@@ -165,5 +166,5 @@ def find_govt_scheme(query, state):
     else:
         print("No JSON object found in response.")
 
-#find_govt_scheme("What is the cutoff date for determination of eligibility of beneficiaries under the scheme, Pradhan Mantri Kisan Samman Nidhi", "Uttar Pradesh")
+#find_govt_scheme("I am facing issues with irrgation because I don't have any pond or lake. What to do?", "Uttar Pradesh")
 

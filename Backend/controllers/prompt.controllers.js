@@ -35,7 +35,7 @@ export const diseaseQueryController = async (req,res)=>{
         formData.append("prompt",prompt)
         formData.append("image",image)
         console.log(formData)
-        const resp = await fetch("http://localhost:8000/diseaseQuery",{
+        const resp = await fetch("http://localhost:8000/image_query",{
             method:"POST",
             body:formData
         })
@@ -55,7 +55,8 @@ export const schemeQueryController = async (req,res)=>{
             return res.status(400).json({message:"Prompt is required"})
         }
         const data ={"prompt":prompt,"state":req.user.state}
-        const resp = await fetch("http://localhost:8000/schemeQuery",{
+        console.log(data)
+        const resp = await fetch("http://localhost:8000/govt_scheme",{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -63,8 +64,9 @@ export const schemeQueryController = async (req,res)=>{
             body:JSON.stringify(data)
         })
         const ans = await resp.json()
-        console.log(ans)
-        res.status(200).json({message:"Scheme query successful",response:ans.llm_response})
+        console.log(ans.llm_responce)
+        res.status(200).json({message: ans.llm_responce,response: ans.llm_responce})
+
     } catch (error) {
         console.log("Error in schemeQueryController",error)
         res.status(500).json({message:"Internal server error"})
