@@ -21,6 +21,19 @@ const MarketplaceBox = () => {
     setMandiResults(null);
   };
 
+  const handleStateChange = (e) => {
+    setSelectedState(e.target.value);
+    setSelectedDistrict("");
+    setSelectedCrops([]); // Reset crops
+    setMandiResults(null);
+  };
+
+  const handleDistrictChange = (e) => {
+    setSelectedDistrict(e.target.value);
+    setSelectedCrops([]); // Reset crops
+    setMandiResults(null);
+  };
+
   const handleGetPrice = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/prompt/cropQuery", {
@@ -47,7 +60,7 @@ const MarketplaceBox = () => {
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100">
-      <div className="bg-blue-500 rounded-xl shadow-lg z-20 flex flex-col justify-center items-center w-full max-w-lg h-[60vh] p-8">
+      <div className="bg-blue-500 rounded-xl shadow-lg z-20 flex flex-col justify-center items-center w-full max-w-lg h-[70vh] p-8">
         <h2 className="text-white font-bold text-2xl mb-6">Find Crop Prices</h2>
 
         {/* State Dropdown */}
@@ -57,11 +70,7 @@ const MarketplaceBox = () => {
             id="state"
             className="w-full px-3 py-2 rounded-lg border border-blue-200 focus:outline-none"
             value={selectedState}
-            onChange={e => {
-              setSelectedState(e.target.value);
-              setSelectedDistrict("");
-              setMandiResults(null);
-            }}
+            onChange={handleStateChange}
           >
             <option value="">Select State</option>
             {states.map(state => (
@@ -77,10 +86,7 @@ const MarketplaceBox = () => {
             id="district"
             className="w-full px-3 py-2 rounded-lg border border-blue-200 focus:outline-none"
             value={selectedDistrict}
-            onChange={e => {
-              setSelectedDistrict(e.target.value);
-              setMandiResults(null);
-            }}
+            onChange={handleDistrictChange}
             disabled={!selectedState}
           >
             <option value="">Select District</option>
