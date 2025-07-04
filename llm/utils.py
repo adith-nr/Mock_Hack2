@@ -94,8 +94,8 @@ def mandi_price_rate(state, district, crop_list):
 #  'Ladies Finger'])
 
 
-def image_solution(img_bytes, query):
-    img = Image.open(io.BytesIO(img_bytes))
+def image_solution(img_path, query):
+    img = Image.open(img_path)
     question = f"""
 Which crop disease is this? Also give your response with respect to user's query: {query}.
 
@@ -119,7 +119,7 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
         try:
             result = json.loads(json_str)
             
-            print(json.dump(result, indent=2))
+            #print(json.dump(result, indent=2))
             return result
         except Exception as e:
             print("Error parsing JSON:", e)
