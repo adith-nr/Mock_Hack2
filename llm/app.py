@@ -18,6 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+SAVE_DIR = "uploaded_images"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 # Define input schema using Pydantic
@@ -43,14 +44,14 @@ async def image_query_resolve(
 ):
     ext = os.path.splitext(file.filename)[1]
     filename = f"{uuid.uuid4().hex}{ext}"
-    path = os.path.join("C:/Users/Azeem/Desktop/Mock_Hack2/llm/uploaded_images", filename)
-    with open(path, "wb") as buffer:
+    fpath = os.path.join("C:/Users/Azeem/Desktop/Mock_Hack2/llm/uploaded_images", filename)
+    with open(fpath, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
 
-    result = image_solution(path, prompt)
+    result = image_solution(fpath, prompt)
 
-    os.remove(path)
+    os.remove(fpath)
     #print(result)
 
     return {"status": "success", "llm_responce": result}
