@@ -50,7 +50,7 @@ async def image_query_resolve(
 
     result = image_solution(path, prompt)
 
-    shutil.rmtree(path)
+    os.remove(path)
     #print(result)
 
     return {"status": "success", "llm_responce": result}
