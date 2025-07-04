@@ -5,6 +5,7 @@ import cors from "cors"
 import { ConnectDB } from "./db.js"
 import authRoutes from "./routes/auth.routes.js"
 import promptRoutes from "./routes/prompt.routes.js"
+
 dotenv.config();
 
 ConnectDB()

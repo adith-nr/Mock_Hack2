@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, UploadFile, File,Form
+import shutil, uuid, os
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
@@ -17,6 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+os.makedirs(SAVE_DIR, exist_ok=True)
+
 # Define input schema using Pydantic
 class MandiRequest(BaseModel):
     state: str
@@ -27,25 +30,30 @@ class GovtSchemeRequest(BaseModel):
     prompt: str 
     state: str
 
-class ImageRequest(BaseModel):
-    img : UploadFile = File(...) #Edit here if img filename would be provided from the server
-    query: str
-
 @app.post("/mandi_price")
 async def mandi_price_resolve(req: MandiRequest):
     print("Received data:", req)
     result = mandi_price_rate(req.state, req.district, req.crop_list)
     return {"status": "success", "llm_response": result}
 
-
 @app.post("/image_query")
 async def image_query_resolve(
-    image: UploadFile = File(...),
+    file: UploadFile = File(...),
     prompt: str = Form(...)
 ):
-    print("Received data:", prompt)
-    result = image_solution(image.file, prompt)
-    return {"status": "sucess", "llm_responce": result}
+    ext = os.path.splitext(file.filename)[1]
+    filename = f"{uuid.uuid4().hex}{ext}"
+    path = os.path.join("C:/Users/Azeem/Desktop/Mock_Hack2/llm/uploaded_images", filename)
+    with open(path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+
+    result = image_solution(path, prompt)
+
+    os.remove(path)
+    #print(result)
+
+    return {"status": "success", "llm_responce": result}
 
 
 @app.post("/govt_scheme")
