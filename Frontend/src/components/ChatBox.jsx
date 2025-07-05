@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Welcome to PlantScan! 🌱 How can I help you take care of your crops today?" },
+    { sender: "bot", text: "Welcome to PlantScan! 🌱 How can I help you take care of your crops today? Make sure to upload a photo of your plant(compulsory) and describe your plant's condition" },
   ])
   const [input, setInput] = useState("")
   const [imageFile, setImageFile] = useState(null)
@@ -108,7 +108,7 @@ const ChatBox = () => {
           <span className="mr-2">🤖</span>
           Plant Disease Assistant
         </h2>
-        <p className="text-green-100 text-sm mt-1">Upload a photo or describe your plant's condition</p>
+        <p className="text-green-100 text-sm mt-1">Upload a photo and describe your plant's condition</p>
       </div>
 
       {/* Chat display */}

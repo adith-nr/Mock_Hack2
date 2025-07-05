@@ -108,19 +108,8 @@ const LandingPage = () => {
       {/* Stats Section */}
       <section className="bg-gradient-to-r from-green-600 to-blue-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold mb-2">10,000+</div>
-              <div className="text-xl">Plants Scanned</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">95%</div>
-              <div className="text-xl">Accuracy Rate</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">500+</div>
-              <div className="text-xl">Happy Farmers</div>
-            </div>
+          <div className="grid  gap-8 text-center text-3xl font-bold mb-2 opacity-65">
+          Empowering Farmers, Cultivating the Future.
           </div>
         </div>
       </section>

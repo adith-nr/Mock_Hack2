@@ -17,7 +17,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+SAVE_DIR = "/Users/adithnr/Documents/GitHub/Mock_Hack2/llm/uploaded_images"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 # Define input schema using Pydantic
@@ -41,9 +41,10 @@ async def image_query_resolve(
     file: UploadFile = File(...),
     prompt: str = Form(...)
 ):
+    print("Received data:", file, prompt)
     ext = os.path.splitext(file.filename)[1]
     filename = f"{uuid.uuid4().hex}{ext}"
-    path = os.path.join("C:/Users/Azeem/Desktop/Mock_Hack2/llm/uploaded_images", filename)
+    path = os.path.join(SAVE_DIR, filename)
     with open(path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 

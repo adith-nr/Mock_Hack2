@@ -171,5 +171,5 @@ def find_govt_scheme(query, state):
         print("No JSON object found in response.")
 
 #find_govt_scheme("I am facing issues with irrgation because I don't have any pond or lake. What to do?", "Uttar Pradesh")
-find_govt_scheme("Pradhan Mantri Fasal Bima Yojana","Uttar Pradesh")
+#find_govt_scheme("Pradhan Mantri Fasal Bima Yojana","Uttar Pradesh")
 
