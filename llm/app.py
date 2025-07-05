@@ -17,7 +17,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-SAVE_DIR = "/Users/adithnr/Documents/GitHub/Mock_Hack2/llm/uploaded_images"
+SAVE_DIR = f'{os.getcwd()}/uploaded_images'
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 # Define input schema using Pydantic
@@ -49,9 +49,9 @@ async def image_query_resolve(
         shutil.copyfileobj(file.file, buffer)
 
 
-    result = image_solution(fpath, prompt)
+    result = image_solution(path, prompt)
 
-    os.remove(fpath)
+    os.remove(path)
     #print(result)
 
     return {"status": "success", "llm_responce": result}
