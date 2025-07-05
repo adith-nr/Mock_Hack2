@@ -1,7 +1,8 @@
 # 🌾 PlantScan - AI-Powered Agricultural Assistant
 
 A smart, farmer-first platform that leverages AI for **plant disease detection**, **government scheme recommendations**, and **mandi price optimization**, empowering farmers to make data-driven decisions.
-
+Demo-Video of Setup-https://drive.google.com/file/d/1azFaCLcyD21dVNXEoDwOuoaJ45GE45_V/view?usp=sharing
+Demo-Video of Working-https://drive.google.com/file/d/14hEQFI75eVP4dKt68AtnQMLFpxTGms8M/view?usp=sharing
 ## 🎯 Problem Statement
 
 Farmers face challenges in identifying crop diseases early, accessing relevant government schemes, and maximizing crop profits due to fragmented information and lack of technical tools.
