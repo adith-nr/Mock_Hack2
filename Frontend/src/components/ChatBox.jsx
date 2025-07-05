@@ -33,7 +33,7 @@ const ChatBox = () => {
       }
       const data = await response.json()
       console.log(data)
-      
+
       setMessages((msgs) => [
         ...msgs.slice(0, -1), // Remove loading message
         { sender: "bot", text: data.solution || "Thank you for your message. Our team will help you soon!" },

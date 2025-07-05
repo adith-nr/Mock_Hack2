@@ -49,9 +49,9 @@ async def image_query_resolve(
         shutil.copyfileobj(file.file, buffer)
 
 
-    result = image_solution(path, prompt)
+    result = image_solution(fpath, prompt)
 
-    os.remove(path)
+    os.remove(fpath)
     #print(result)
 
     return {"status": "success", "llm_responce": result}

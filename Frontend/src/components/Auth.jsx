@@ -3,6 +3,11 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import { all_states } from "./constants"
+
+
+const states = all_states;
+
 function Auth() {
   const [isLogIn, setIsLogIn] = useState(true)
   const [email, setEmail] = useState("")
@@ -10,6 +15,15 @@ function Auth() {
   const [name, setName] = useState("")
   const [state, setState] = useState("")
   const [loading, setLoading] = useState(false)
+
+  const [selectedState, setSelectedState] = useState("")
+
+  const handleStateChange = (e) => {
+    setSelectedState(e.target.value)
+    setSelectedDistrict("")
+    setSelectedCrop("")
+    setMandiResults(null)
+  }
 
   const navigate = useNavigate()
 
@@ -40,7 +54,7 @@ function Auth() {
 
   const handleSignup = async () => {
     setLoading(true)
-    const data = { name: name, email: email, password: password, state: state }
+    const data = { name: name, email: email, password: password, state: selectedState }
     try {
       const response = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
@@ -147,13 +161,19 @@ function Auth() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
-                <input
-                  type="text"
-                  placeholder="Enter your state"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                />
+                <select
+                  id="state"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white"
+                  value={selectedState}
+                  onChange={handleStateChange}
+                >
+                  <option value="">Choose your state</option>
+                  {states.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
