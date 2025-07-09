@@ -99,7 +99,7 @@ The backend server will run on `http://localhost:3000`
 ```bash
 cd llm
 pip install -r requirements.txt
-fastapi dev app.py
+uvicorn app:app --reload
 ```
 
 The LLM service will run on `http://localhost:8000`
