@@ -11,3 +11,4 @@ venv/
 
 # Node.js dependencies (if you have them)
 node_modules/
+uploads/
