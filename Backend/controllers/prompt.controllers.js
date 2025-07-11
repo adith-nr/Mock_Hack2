@@ -49,8 +49,8 @@ export const diseaseQueryController = async (req,res)=>{
 
         fs.unlink(req.file.path, () => {});  // tidy temp file
         
-        const ans = resp.data.llm_responce;
-        console.log("Raw FastAPI response:", ans.llm_responce);
+        let ans = resp.data.llm_responce;
+        console.log("Raw FastAPI response:", ans);
 
         if (typeof ans === "string") {
         try {

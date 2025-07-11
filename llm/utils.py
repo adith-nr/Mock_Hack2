@@ -4,7 +4,7 @@ import os, io
 from dotenv import load_dotenv
 import json
 from langchain_groq import ChatGroq
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 import pandas as pd
 import re
 from PIL import Image
@@ -79,8 +79,11 @@ def mandi_price_rate(state, district, crop_list):
             crop_json[crop] = []
         crop_json[crop].append(entry)
 
-    crop_json['llm_resoponce'] = llm_responce.content
+    filtered_text = llm_responce.content
+    #filtered_text = filtered_text.replace('*','')
+    crop_json['llm_resoponce'] = filtered_text
     print(json.dumps(crop_json, indent=2))
+
 
     return crop_json
 
@@ -117,9 +120,15 @@ Respond ONLY with a valid JSON object in the following format, and nothing else:
     if match:
         json_str = match.group(0)
         try:
-            result = json.loads(json_str)
             
-            #print(json.dump(result, indent=2))
+            
+            result = json.dumps(json_str, indent=2)
+
+            filtered_text = result
+            filtered_text = re.sub(r'\*\*(.*?)\*\*', r'\1', filtered_text)
+            result = json.loads(filtered_text)
+
+            #print(result)
             return result
         except Exception as e:
             print("Error parsing JSON:", e)
@@ -155,6 +164,8 @@ def find_govt_scheme(query, state):
 
     llm_responce = llm.invoke([HumanMessage(prompt)])
 
+    # with open("try.txt", 'w', encoding="UTF-8") as f:
+    #     f.write(llm_responce.content)
 
     # Extract JSON object from response
     match = re.search(r'\{[\s\S]*\}', llm_responce.content)
@@ -170,6 +181,8 @@ def find_govt_scheme(query, state):
     else:
         print("No JSON object found in response.")
 
+# q = "हमरा कुछ सिंचाई योजना आ पीएम श्री सिचाई योजना के जानकारी के जरूरत बा।"
+#find_govt_scheme(q, "Uttar Pradesh")
 #find_govt_scheme("I am facing issues with irrgation because I don't have any pond or lake. What to do?", "Uttar Pradesh")
 #find_govt_scheme("Pradhan Mantri Fasal Bima Yojana","Uttar Pradesh")
 

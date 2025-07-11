@@ -52,7 +52,7 @@ async def image_query_resolve(
     result = image_solution(path, prompt)
 
     os.remove(path)
-    #print(result)
+    print(result)
 
     return {"status": "success", "llm_responce": result}
 
